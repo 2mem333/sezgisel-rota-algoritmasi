@@ -1,8 +1,9 @@
 #include <iostream>
 #include <vector>
+#include <Windows.h>
 
 struct matris {
-	int sutun[7];
+	int sutun[10];
 };
 
 std::vector<int> silinen_satir;
@@ -103,49 +104,61 @@ void bitis_yazdir(std::vector<int> kapsama)
 
 int main()
 {
-	const int satir_sayisi = 7;
-	const int sutun_sayisi = 7;
+	const int satir_sayisi = 9;
+	const int sutun_sayisi = 10;
 
-	float satir_a[7];
-	int sutun_a[7];
+	float satir_a[satir_sayisi]; //satir agirliklari depolanir
+	int sutun_a[sutun_sayisi]; //her bir sutunun agirliginin depolandigi
 	std::vector<int> selected; //satir agirligi hesaplanacak indeksler
 	std::vector<int> mutlaksatir;
 	std::vector<int> kapsama;
-	bool ismutlaksatir = 0;
+	bool ismutlaksatir = 0; //mutlak satir var mi yok mu kontrol
 
-	matris satir[7];
+	matris satir[9];
 
 	satir[0].sutun[0] = 1;
 	satir[0].sutun[1] = 0;
-	satir[0].sutun[2] = 1;
-	satir[0].sutun[3] = 0;
-	satir[0].sutun[4] = 1;
+	satir[0].sutun[2] = 0;
+	satir[0].sutun[3] = 1;
+	satir[0].sutun[4] = 0;
 	satir[0].sutun[5] = 0;
 	satir[0].sutun[6] = 0;
+	satir[0].sutun[7] = 1;
+	satir[0].sutun[8] = 0;
+	satir[0].sutun[9] = 0;
 
 	satir[1].sutun[0] = 0;
 	satir[1].sutun[1] = 1;
-	satir[1].sutun[2] = 0;
-	satir[1].sutun[3] = 1;
+	satir[1].sutun[2] = 1;
+	satir[1].sutun[3] = 0;
 	satir[1].sutun[4] = 1;
 	satir[1].sutun[5] = 0;
 	satir[1].sutun[6] = 0;
+	satir[1].sutun[7] = 1;
+	satir[1].sutun[8] = 0;
+	satir[1].sutun[9] = 0;
 
 	satir[2].sutun[0] = 0;
 	satir[2].sutun[1] = 1;
-	satir[2].sutun[2] = 1;
+	satir[2].sutun[2] = 0;
 	satir[2].sutun[3] = 0;
-	satir[2].sutun[4] = 1;
-	satir[2].sutun[5] = 0;
+	satir[2].sutun[4] = 0;
+	satir[2].sutun[5] = 1;
 	satir[2].sutun[6] = 1;
+	satir[2].sutun[7] = 0;
+	satir[2].sutun[8] = 0;
+	satir[2].sutun[9] = 0;
 
 	satir[3].sutun[0] = 0;
 	satir[3].sutun[1] = 0;
 	satir[3].sutun[2] = 1;
-	satir[3].sutun[3] = 0;
+	satir[3].sutun[3] = 1;
 	satir[3].sutun[4] = 0;
-	satir[3].sutun[5] = 1;
+	satir[3].sutun[5] = 0;
 	satir[3].sutun[6] = 0;
+	satir[3].sutun[7] = 1;
+	satir[3].sutun[8] = 0;
+	satir[3].sutun[9] = 1;
 
 	satir[4].sutun[0] = 0;
 	satir[4].sutun[1] = 0;
@@ -153,26 +166,58 @@ int main()
 	satir[4].sutun[3] = 1;
 	satir[4].sutun[4] = 0;
 	satir[4].sutun[5] = 0;
-	satir[4].sutun[6] = 0;
+	satir[4].sutun[6] = 1;
+	satir[4].sutun[7] = 0;
+	satir[4].sutun[8] = 1;
+	satir[4].sutun[9] = 0;
 
 	satir[5].sutun[0] = 1;
 	satir[5].sutun[1] = 0;
-	satir[5].sutun[2] = 0;
-	satir[5].sutun[3] = 1;
-	satir[5].sutun[4] = 1;
+	satir[5].sutun[2] = 1;
+	satir[5].sutun[3] = 0;
+	satir[5].sutun[4] = 0;
 	satir[5].sutun[5] = 1;
 	satir[5].sutun[6] = 0;
+	satir[5].sutun[7] = 0;
+	satir[5].sutun[8] = 0;
+	satir[5].sutun[9] = 0;
 
-	satir[6].sutun[0] = 1;
-	satir[6].sutun[1] = 1;
+	satir[6].sutun[0] = 0;
+	satir[6].sutun[1] = 0;
 	satir[6].sutun[2] = 0;
-	satir[6].sutun[3] = 1;
-	satir[6].sutun[4] = 0;
+	satir[6].sutun[3] = 0;
+	satir[6].sutun[4] = 1;
 	satir[6].sutun[5] = 0;
 	satir[6].sutun[6] = 1;
+	satir[6].sutun[7] = 0;
+	satir[6].sutun[8] = 0;
+	satir[6].sutun[9] = 0;
+
+	satir[7].sutun[0] = 1;
+	satir[7].sutun[1] = 0;
+	satir[7].sutun[2] = 0;
+	satir[7].sutun[3] = 0;
+	satir[7].sutun[4] = 1;
+	satir[7].sutun[5] = 0;
+	satir[7].sutun[6] = 0;
+	satir[7].sutun[7] = 1;
+	satir[7].sutun[8] = 1;
+	satir[7].sutun[9] = 0;
+
+	satir[8].sutun[0] = 1;
+	satir[8].sutun[1] = 0;
+	satir[8].sutun[2] = 1;
+	satir[8].sutun[3] = 0;
+	satir[8].sutun[4] = 1;
+	satir[8].sutun[5] = 0;
+	satir[8].sutun[6] = 1;
+	satir[8].sutun[7] = 0;
+	satir[8].sutun[8] = 0;
+	satir[8].sutun[9] = 1;
 
 
 bas:
+	ismutlaksatir = 0;
 	for (int a = 0; a < satir_sayisi; a++) //tum sutunlari kapsayan satir mevcut mu diye bak
 	{
 		if (contains(a, silinen_satir))
@@ -223,12 +268,15 @@ bas:
 
 		}
 		yazdir(satir, satir_sayisi,sutun_sayisi); //satir + sutun sayisina gore olcak
+		mutlaksatir.clear(); //kaydedilen mutlak satirlar silinir
 		goto bas;
 	}
 
 	int sel = sutun_sayisi;
 	for (int i = 0; i < sutun_sayisi; i++) //en az agirlikli sutunlar bulunur
 	{
+		if (contains(i, silinen_sutun))
+			continue;
 		if (sutun_a[i] < sel)
 		{
 			selected.clear();
