@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <Windows.h>
 
 struct matris {
 	int sutun[10];
