@@ -87,7 +87,8 @@ struct Matrix {
 
 			if (sutun_agirligi(i) == 1) // eger sutunun agirligi 1 ise, karsilik gelen satiri bul
 			{
-				mutlak_satirlar.push_back(karsilik_gelen_satir(i));
+				if(!contains(i,mutlak_satirlar)) //eger mutlak_satirlar icinde yok 
+                                   mutlak_satirlar.push_back(karsilik_gelen_satir(i));
 				ms_var = true;
 			}
 		}
