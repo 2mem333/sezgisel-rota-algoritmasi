@@ -11,7 +11,7 @@
 Sistemde kayıtlı sezgisel rota için uygun örnek bir matris yükler.
 
 ## Uyumluluk
-Uygulama windows tabanlı olup sadece bu işletim sisteminde çalışmaktadır.
+Uygulama windows tabanlı olup sadece bu işletim sisteminde çalışmaktadır. Diğer işletim sistemine sahip kullanıcılar https://github.com/2mem333/sezgisel-rota-algoritmasi/blob/main/KonsolVersiyonu.cpp konsol uygulamasını kullanabilir.
 
 # Uygulamadan birkaç örnek ekran görüntüsü:
 
