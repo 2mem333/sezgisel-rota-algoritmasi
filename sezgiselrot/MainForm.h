@@ -19,6 +19,7 @@ namespace sezgiselrot {
 	private: System::Windows::Forms::RichTextBox^ kapsamalar_textbox;
 
 
+
 	private: System::Windows::Forms::Button^ ilkhal;
 
 	public:
@@ -95,6 +96,7 @@ namespace sezgiselrot {
 			// 
 			// satir_sayisi
 			// 
+			this->satir_sayisi->BackColor = System::Drawing::SystemColors::Window;
 			this->satir_sayisi->Location = System::Drawing::Point(60, 10);
 			this->satir_sayisi->Name = L"satir_sayisi";
 			this->satir_sayisi->Size = System::Drawing::Size(47, 20);
@@ -247,13 +249,13 @@ namespace sezgiselrot {
 			this->Controls->Add(this->satir_sayisi);
 			this->Controls->Add(this->matrisolustur);
 			this->Name = L"MainForm";
-			this->Text = L"MainForm";
+			this->Text = L"Sezgisel Rota Algoritmasi";
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
-		
+
 private: System::Void matrisolustur_Click(System::Object^ sender, System::EventArgs^ e) { //sıfır matris olustur
 	kapsamalar_textbox->Clear();
 	olaylar->Clear();
@@ -294,32 +296,35 @@ private: System::Void rastgele_matrisolusutur_Click(System::Object^ sender, Syst
 	matta->yazdir();
 }
 private: System::Void matrisi_coz_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (!devam && !bitti)
+	if (!bitti) //eger cozum bitmis ise
 	{
-		if (matta->tum_kapsama_var_mi() == 999)
+		if (!devam) // sirayla yazdirip, islem yapmak icin
 		{
-			matta->kapsamalari_yazdir();
-			bitti = true;
-		}
-		else
-		{
-			if (matta->mutlak_satir_bul() == 1)
+			if (matta->tum_kapsama_var_mi() == 999)
 			{
-				matta->mutlak_satir_sil();
-				olaylar->AppendText("--------------------\n");
+				matta->kapsamalari_yazdir();
+				bitti = true;
 			}
 			else
 			{
-				//sezgisel rota algoritmasına geciliyor
-				matta->enaz_agir_sutun_sil();
-				olaylar->AppendText("--------------------\n");
+				if (matta->mutlak_satir_bul() == 1)
+				{
+					matta->mutlak_satir_sil();
+					olaylar->AppendText("--------------------\n");
+				}
+				else
+				{
+					//sezgisel rota algoritmasına geciliyor
+					matta->enaz_agir_sutun_sil();
+					olaylar->AppendText("--------------------\n");
+				}
 			}
+			devam = true;
 		}
-		devam = true;
-	}
-	else {
-		matta->yazdir();
-		devam = false;
+		else {
+			matta->yazdir();
+			devam = false;
+		}
 	}
 }
 private: System::Void matrisi_yukle_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -345,6 +350,8 @@ private: System::Void matrisi_yukle_Click(System::Object^ sender, System::EventA
 }
 
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) { //default matris
+	satir_sayisi->Text = "9";
+	sutun_sayisi->Text = "10";
 	olaylar->Clear();
 	devam = 0;
 	bitti = 0;
