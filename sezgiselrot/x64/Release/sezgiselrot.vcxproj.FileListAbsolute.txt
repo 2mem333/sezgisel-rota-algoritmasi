@@ -1,3 +1,0 @@
-C:\Users\Efe\source\repos\sezgiselrot\sezgiselrot\x64\Release\sezgiselrot.vcxproj.AssemblyReference.cache
-C:\Users\Efe\source\repos\sezgiselrot\sezgiselrot\x64\Release\sezgiselrot.MainForm.resources
-C:\Users\Efe\source\repos\sezgiselrot\sezgiselrot\x64\Release\sezgiselrot.vcxproj.GenerateResource.cache
