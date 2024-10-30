@@ -2,7 +2,7 @@
 
 using namespace System;
 using namespace System::Windows::Forms;
-
+using namespace System::Drawing;
 
 public ref class Matrixs {
 private:
@@ -38,10 +38,68 @@ public:
 	{
 		return matris[satir, sutun];
 	}
+	int kapsama_satir_renklendir(int satir, Color clr)
+	{
+		Label^ yazi = gcnew Label();
+		yazi->Location = System::Drawing::Point(15 + p_su * (25), ((25) * (satir + 1)));
+
+		for each (Control ^ control in panel->Controls) {
+			if (TextBox::typeid->IsInstanceOfType(control))
+			{
+				TextBox^ textBox = dynamic_cast<TextBox^>(control);
+				if (textBox->Location.Y == yazi->Location.Y)
+					textBox->BackColor = clr;
+
+			}
+		}
+		return 1;
+	}
+	int renklendir_satir(int satir,Color clr)
+	{
+		for (int i = 0; i < engellenen_satirlar->Count; i++)
+		{
+			if (engellenen_satirlar[i] < satir)
+				satir--;
+		}
+		Label^ yazi = gcnew Label();
+		yazi->Location = System::Drawing::Point(15 + p_su * (25), ((25) * (satir + 1)));
+
+		for each (Control ^ control in panel->Controls) {
+			if (TextBox::typeid->IsInstanceOfType(control))
+			{
+				TextBox^ textBox = dynamic_cast<TextBox^>(control);
+				if(textBox->Location.Y == yazi->Location.Y)
+			        textBox->BackColor = clr;
+
+			}
+		}
+		return 1;
+	}
+	int renklendir_sutun(int sutun)
+	{
+		for (int i = 0; i < engellenen_sutunlar->Count; i++)
+		{
+			if (engellenen_sutunlar[i] < sutun)
+				sutun--;
+		}
+		Label^ yazi = gcnew Label();
+		yazi->Location = System::Drawing::Point(20 + (sutun) * (25), (p_sa + 1) * (25));
+		yazi->Size = System::Drawing::Size(20, 20);
+
+		for each (Control ^ control in panel->Controls) {
+			if (TextBox::typeid->IsInstanceOfType(control))
+			{
+				TextBox^ textBox = dynamic_cast<TextBox^>(control);
+				if (textBox->Location.X == yazi->Location.X)
+					textBox->BackColor = Color::LightCoral;
+
+			}
+		}
+		return 1;
+	}
 	void yazdir() //matrisi panele yazdirir
 	{
 		this->panel->Controls->Clear(); //matris panelini temizler
-
 
 		int boxSize = 20;
 		int spacing = 5;
@@ -93,7 +151,8 @@ public:
 				textBox->Size = System::Drawing::Size(boxSize, boxSize);
 				textBox->Text = System::Convert::ToString(dondur(a, i));
 				this->panel->Controls->Add(textBox);
-
+				if (contains(a, kapsama))
+					kapsama_satir_renklendir(a, Color::Chartreuse);
 				Label^ header = gcnew Label();
 				header->Text = i.ToString();
 				header->Location = System::Drawing::Point(25 + p_su * (boxSize + spacing), +5); // sutun baslik konumu
@@ -134,7 +193,7 @@ public:
 		Label^ yazi = gcnew Label();
 		yazi->Text = "--> " + agirlik;
 		yazi->Location = System::Drawing::Point(15 + p_su * (25), 5 + ((25) * (satir + 1)));
-		yazi->Size = System::Drawing::Size(60, 20);
+		yazi->Size = System::Drawing::Size(100, 20);
 		this->panel->Controls->Add(yazi);
 	}
 	void sutun_agirlik_yazdir(int sutun, int agirlik)
@@ -227,11 +286,67 @@ public:
 				kapsamalar_rtextbox->AppendText("" + a + "  ");
 				kapsama->Add(a);
 				satir_yanina_yazi(a,"Hepsini kapsiyor");
+				renklendir_satir(a, Color::Chartreuse);
 				return 999;
 			}
 		}
 		return 0; //bulunamadi.
 	}
+	bool mutlak_satir_kaldir()
+	{
+		for (int i = 0; i < sutun_sayisi; i++) //mutlak satir, 0 satir kontrol
+		{
+			int w = sutun_agirligi(i);
+			if (w == 1) // eger sutunun agirligi 1 ise, (mutlak satir mevcut)
+			{
+				for (int x = 0; x < satir_sayisi; x++)
+				{
+					if (matris[x, i] == 0)
+					{
+						matris[x, i] = 1; //ilk 0 gorulen eleman 1 yapilir boylece mutlak satir ortadan kaldirilir.
+					}
+				}
+			}
+			if (w == 0) // eger sutunda hic 1 yok ise
+			{
+				int cnt = 0;
+				while (cnt != 2) {
+					for (int x = 0; x < satir_sayisi; x++)
+					{
+						if (matris[x, i] == 0)
+						{
+							matris[x, i] = 1;
+							cnt++;
+						}
+					}
+				}
+			}
+
+		}
+		return false;
+	}
+	void tum_kapsama_kaldir()
+	{
+		bool tum_kapsama;
+		for (int a = 0; a < satir_sayisi; a++)
+		{
+			tum_kapsama = 1;
+			for (int i = 0; i < sutun_sayisi; i++)
+			{
+				if (matris[a, i] == 0)
+				{
+					tum_kapsama = 0;
+					break;
+				}
+					
+			}
+			if (tum_kapsama) //eger satir tum sutunlari kapsiyor ise
+			{
+				matris[a, 0] = 0; //ilk sutunun kapsamasi 0 olarak degistirilir.
+			}
+		}
+	}
+
 	int mutlak_satir_bul()
 	{
 		mutlak_satirlar->Clear();
@@ -255,6 +370,7 @@ public:
 			{
 				log->AppendText(mutlak_satirlar[i] + " ");
 				satir_yanina_yazi(mutlak_satirlar[i], "Mutlak satir");
+				renklendir_satir(mutlak_satirlar[i], Color::LightCoral);
 			}
 			log->AppendText("\n");
 		}
@@ -270,13 +386,20 @@ public:
 		{
 			kapsama->Add(mutlak_satirlar[x]); //mutlak satir kapsamaya alinir
 			engellenen_satirlar->Add(mutlak_satirlar[x]); //mutlak satir silinir
-			log->AppendText("Mutlak satir " + mutlak_satirlar[x] + " kapsamaya alindi.\n" + mutlak_satirlar[x] + ". satir silindi.\n");
+			log->AppendText("Mutlak satir " + mutlak_satirlar[x] + " kapsamaya alindi.\n" + mutlak_satirlar[x] + ". satir siliniyor.\n");
 			kapsamalar_rtextbox->AppendText("" + mutlak_satirlar[x] + "  ");
-			for (int i = 0; i < satir_sayisi; i++)
+
+			for (int i = 0; i < sutun_sayisi; i++) //once renklendiriyorum, cunku bunu yapmazsam sutunu engellediginde sýkýntý cýkarýr.
+			{
+				if (matris[mutlak_satirlar[x], i] == 1) {
+					renklendir_sutun(i);
+				}
+			}
+			for (int i = 0; i < sutun_sayisi; i++)
 			{
 				if (matris[mutlak_satirlar[x],i] == 1) {
+					log->AppendText(i + ".sutun siliniyor. ");
 					engellenen_sutunlar->Add(i); //mutlak satirin aktif sutunlari silinir
-					log->AppendText(i + ".sutun silindi. ");
 				}
 			}
 		}
@@ -360,6 +483,7 @@ public:
 
 		log->AppendText("\nEn az agir satir= " + enAzAgir_satir);
 		log->AppendText("\n" + enAzAgir_satir + ". satir siliniyor.\n");
+		renklendir_satir(enAzAgir_satir, Color::LightCoral);
 		engellenen_satirlar->Add(enAzAgir_satir);
 	}
 
